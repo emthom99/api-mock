@@ -57,7 +57,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
                     'class'=>'CLinkColumn',
                     'header'=>'url',
                     'labelExpression'=>'$data->url',
-                    'urlExpression'=>'"http://".$_SERVER["SERVER_NAME"]."/".(($data->url!="") &&($data->url[0]=="/")?substr($data->url,1):$data->url)',
+                    'urlExpression'=>'"http://".$_SERVER["HTTP_HOST"]."/".(($data->url!="") &&($data->url[0]=="/")?substr($data->url,1):$data->url)',
                 ),
                 array(
                     'class'=>'CDataColumn',
