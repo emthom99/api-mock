@@ -139,9 +139,8 @@ class HistoryController extends Controller
                 //COOKIES
                 if(count($_COOKIE)) $request.="\r\n\r\n=============COOKIES Params==========================================\r\nCOOKIES Params ".var_export($_COOKIE,true);
                 
-                
+                $files=array();
                 if(count($_FILES)>0){
-                    $files=array();
                     foreach ($_FILES as $kfile=>$file) {
                         $path_parts =pathinfo($file['name']);
                         $newName=$path_parts['filename'].'_'.time().'.'.$path_parts['extension'];
@@ -176,10 +175,9 @@ class HistoryController extends Controller
                         }
                         else{
                             $req_params=$_POST;
-                            if($files!=null) 
-                                foreach ($files as $kfile=>$file) {
-                                    $req_params[$kfile]='@'.realpath(Yii::app()->basePath.'/../data/'.$file['servername']);
-                                }
+                            foreach ($files as $kfile=>$file) {
+                                $req_params[$kfile]='@'.realpath(Yii::app()->basePath.'/../data/'.$file['servername']);
+                            }
                         }
                         
                         if($option->delay>0)
