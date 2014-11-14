@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE);
 if (!function_exists('http_response_code'))
 {
     function http_response_code($newcode = NULL)
