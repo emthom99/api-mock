@@ -70,7 +70,8 @@ class HistoryController extends Controller
 		));
 	}
 
-        public static function  getRemotePage($req_url, $req_method, $req_params, $req_user_agent, $req_cookies, $req_referer, &$res_status, &$res_cookies, &$res_content) {
+        public static function  getRemotePage($req_url, $req_method, $req_params, $req_user_agent, $req_cookies, $req_referer, 
+        	&$res_status, &$res_cookies, &$res_content, &$res_header) {
             // create a new cURL resource
             $ch = curl_init();
 
@@ -94,23 +95,23 @@ class HistoryController extends Controller
 
             // grab URL and pass it to the browser
             $response=curl_exec($ch);
-            list( $header, $res_content ) = preg_split( '/([\r\n][\r\n])\\1/', $response, 2 );
-            if(strpos($header," 100 Continue")!==false){
-                list( $header, $res_content ) = preg_split( '/([\r\n][\r\n])\\1/', $res_content, 2 );
+            list( $res_header, $res_content ) = preg_split( '/([\r\n][\r\n])\\1/', $response, 2 );
+            if(strpos($res_header," 100 Continue")!==false){
+                list( $res_header, $res_content ) = preg_split( '/([\r\n][\r\n])\\1/', $res_content, 2 );
             }
             $res_status = curl_getinfo($ch);
-            preg_match_all('/^Set-Cookie: (.*?);/m', $header, $cookies);
+            preg_match_all('/^Set-Cookie: (.*?);/m', $res_header, $cookies);
             $res_cookies = count($cookies) > 0 ? implode('; ', $cookies[1]) : '';
             $res_cookies = implode('; ', $cookies[1]);
             // close cURL resource, and free up system resources
             curl_close($ch);
 
-            if($res_status['http_code']==301){
+            /*if($res_status['http_code']==301){
                 preg_match('#Location: (.*)#', $header, $matches);
                 if(isset($matches[1])){
                     self::getRemotePage($matches[1], $req_method, $req_params, $req_user_agent, $req_cookies, $req_referer, $res_status, $res_cookies, $res_content);
                 }
-            }
+            }*/
         }
         
 	/**
@@ -186,18 +187,16 @@ class HistoryController extends Controller
                         
                         self::getRemotePage($url_passthrough, $model->method, $req_params, 
                                 $_SERVER['HTTP_USER_AGENT'], $_SERVER['HTTP_COOKIE'], '', 
-                                $res_status, $res_cookies, $res_content);
+                                $res_status, $res_cookies, $res_content, $res_header);
                         $response_code=$res_status['http_code'];
-                        
-                        if($response_code!=200){
-                            $model->response='response_code='.$response_code;
-                            http_response_code ($response_code);
+                        //var_dump($res_header);exit();
+                        $aHeader=explode("\n", preg_replace('/(Set-Cookie: .*?);.*/', '$1', $res_header));
+                        foreach ($aHeader as $headerItem) {
+                        	header($headerItem,false);
                         }
-                        else{
-                            header('Content-type: '.$res_status['content_type']);
-                            $model->response=$res_content;
-                            echo $model->response;
-                        }
+                        $model->response="\r\n\r\n=============RESPONSE HEADER==========================================\r\n".$res_header;
+                        $model->response.="\r\n\r\n=============RESPONSE CONTENT==========================================\r\n".$res_content;
+                        echo $res_content;
                     }
                     else{
                         if($option->delay>0)
