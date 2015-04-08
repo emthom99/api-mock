@@ -10,7 +10,8 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'Create Api', 'url'=>array('create')),
 	array('label'=>'Manage Api', 'url'=>array('admin')),
-        array('label'=>'Create Option', 'url'=>array('option/create','api_id'=>$model->id)),
+    array('label'=>'Create Option', 'url'=>array('option/create','api_id'=>$model->id)),
+    array('label'=>'Duplicate', 'url'=>array('api/duplicate','id'=>$model->id)),
 );
 ?>
 

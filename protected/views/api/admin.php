@@ -67,11 +67,16 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
                 ),
 		array(
                     'class'=>'CButtonColumn',
-                    'template'=>'{delete}',
+                    'template'=>'{duplicate} {delete}',
                     'buttons'=> array(
                         'delete'=>array(
                             'visible'=>'$data->name!=Yii::app()->params["default_api_name"]?true:false'
-                        )
+                        ),
+                        'duplicate'=>array(
+                            'label'=>'duplicate',
+                            'imageUrl'=>Yii::app()->request->baseUrl."/images/copy.png",
+                            'url'=>'Yii::app()->createUrl("api/duplicate",array("id"=>$data->id))',
+                        ),
                     )
 		),
 	),

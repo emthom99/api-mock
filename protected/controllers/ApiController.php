@@ -32,7 +32,7 @@ class ApiController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','duplicate'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -155,6 +155,42 @@ class ApiController extends Controller
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+
+	public function actionDuplicate($id){
+		$model=new Api;
+		$srcModel=$this->loadModel($id);
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Api']))
+		{
+			$model->attributes=$_POST['Api'];
+            $model->current_option=null;
+            $model->url=ltrim($model->url," \t\r\n\0\x0b/");
+			if($model->save()){
+
+                //create option
+                foreach ($srcModel->options as $srcOption) {
+                	$option = new Option;
+                	$option->attributes=$srcOption->attributes;
+                	$option->api_id=$model->id;
+                	$option->id=null;
+                	if($option->save()&&$srcModel->current_option==$srcOption->id){
+                		$model->current_option=$option->id;
+                		$model->save();
+                	}
+                }
+                
+                $this->redirect(array('update','id'=>$model->id));
+             }
+		}
+
+		$this->render('duplicate',array(
+			'model'=>$model,
+			'srcModel'=>$srcModel,
+		));
 	}
 
 	/**
