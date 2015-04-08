@@ -192,6 +192,8 @@ class HistoryController extends Controller
                         //var_dump($res_header);exit();
                         $aHeader=explode("\n", preg_replace('/(Set-Cookie: .*?);.*/', '$1', $res_header));
                         foreach ($aHeader as $headerItem) {
+                        	if(strpos($headerItem, "Transfer-Encoding: chunked")>=0)
+                        		continue;
                         	header($headerItem,false);
                         }
                         $model->response="\r\n\r\n=============RESPONSE HEADER==========================================\r\n".$res_header;
