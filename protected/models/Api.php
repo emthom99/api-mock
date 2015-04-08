@@ -45,6 +45,8 @@ class Api extends CActiveRecord
 		return array(
 			array('validated', 'numerical', 'integerOnly'=>true),
 			array('name, url', 'length', 'max'=>255),
+			array('url','unique'),
+			array('name, url','required'),
 			array('current_option', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
