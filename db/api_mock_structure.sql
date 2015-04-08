@@ -35,7 +35,7 @@ CREATE TABLE `tbl_api` (
   `validated` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `current_option` (`current_option`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -56,7 +56,7 @@ CREATE TABLE `tbl_history` (
   `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `api_id` (`api_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=614 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -72,13 +72,15 @@ CREATE TABLE `tbl_option` (
   `is_passthrough` tinyint(4) DEFAULT '0',
   `url_passthrough` varchar(255) DEFAULT '',
   `delay` int(11) DEFAULT '0',
+  `custom_header` tinyint(4) NOT NULL DEFAULT '0',
+  `response_header` text,
   `http_code` int(11) DEFAULT '200',
   `is_json` tinyint(4) DEFAULT '0',
   `reponse_data` longtext,
   `order` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `api_id` (`api_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=119 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 --
 -- Constraints for dumped tables

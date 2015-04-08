@@ -167,6 +167,8 @@ class HistoryController extends Controller
                 $model->api_id=$api->id;
                 
                 if(($option=$api->currentOption)!==null){
+                    if($option->delay>0)
+                        sleep ($option->delay);
                     
                     $model->name=$option->name;
                     if($option->is_passthrough==1){
@@ -181,41 +183,31 @@ class HistoryController extends Controller
                                 $req_params[$kfile]='@'.realpath(Yii::app()->basePath.'/../data/'.$file['servername']);
                             }
                         }
-                        
-                        if($option->delay>0)
-                            sleep ($option->delay);
-                        
+
                         self::getRemotePage($url_passthrough, $model->method, $req_params, 
                                 $_SERVER['HTTP_USER_AGENT'], $_SERVER['HTTP_COOKIE'], '', 
                                 $res_status, $res_cookies, $res_content, $res_header);
-                        $response_code=$res_status['http_code'];
-                        //var_dump($res_header);exit();
-                        $aHeader=explode("\n", preg_replace('/(Set-Cookie: .*?);.*/', '$1', $res_header));
-                        foreach ($aHeader as $headerItem) {
-                        	if(strpos($headerItem, "Transfer-Encoding: chunked")>=0)
-                        		continue;
-                        	header($headerItem,false);
-                        }
-                        $model->response="\r\n\r\n=============RESPONSE HEADER==========================================\r\n".$res_header;
-                        $model->response.="\r\n\r\n=============RESPONSE CONTENT==========================================\r\n".$res_content;
-                        echo $res_content;
                     }
                     else{
-                        if($option->delay>0)
-                            sleep ($option->delay);
-
-                        if($option->http_code!=200){
-                            $model->response='response_code='.$option->http_code;
-                            http_response_code ($option->http_code);
+                        if ($option->custom_header) {
+                        	$res_header=$option->response_header;
                         }
                         else{
-                            if($option->is_json)
-                                header('Content-type: application/json');
-
-                            $model->response=$option->reponse_data;
-                            echo $option->reponse_data;
+                        	$res_header='HTTP/1.1 '.$option->http_code;
+                        	$res_header.=$option->is_json?"\nContent-type: application/json":"\nContent-type: text/html";
                         }
+                        $res_content=$option->reponse_data;
                     }
+                    
+                    $aHeader=explode("\n", preg_replace('/(Set-Cookie: .*?);.*/', '$1', $res_header));
+                    foreach ($aHeader as $headerItem) {
+                    	if(strpos($headerItem, "Transfer-Encoding: chunked")!==false)
+                    		continue;
+                    	header($headerItem,false);
+                    }
+                    $model->response="\r\n\r\n=============RESPONSE HEADER==========================================\r\n".$res_header;
+                    $model->response.="\r\n\r\n=============RESPONSE CONTENT==========================================\r\n".$res_content;
+                    echo $res_content;
                 }
                 else {
                     echo '';

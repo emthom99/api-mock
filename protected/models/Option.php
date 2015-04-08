@@ -10,6 +10,8 @@
  * @property string $url_passthrough
  * @property string $name
  * @property integer $delay
+ * @property integer $custom_header
+ * @property string $response_header
  * @property integer $http_code
  * @property integer $is_json
  * @property string $reponse_data
@@ -47,13 +49,13 @@ class Option extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('is_passthrough, delay, http_code, is_json, order', 'numerical', 'integerOnly'=>true),
+			array('is_passthrough, delay, http_code, is_json, order, custom_header', 'numerical', 'integerOnly'=>true),
 			array('api_id', 'length', 'max'=>20),
 			array('name, url_passthrough', 'length', 'max'=>255),
-			array('reponse_data', 'safe'),
+			array('reponse_data,response_header', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, api_id, name, is_passthrough, url_passthrough, delay, http_code, is_json, reponse_data, order', 'safe', 'on'=>'search'),
+			array('id, api_id, name, is_passthrough, url_passthrough, delay, custom_header, response_header, http_code, is_json, reponse_data, order', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -82,6 +84,8 @@ class Option extends CActiveRecord
 			'is_passthrough' => 'Is Passthrough',
 			'url_passthrough' => 'Url Passthrough',
 			'delay' => 'Delay',
+			'custom_header' => 'Custom Header',
+			'response_header' => 'Response Header',
 			'http_code' => 'Http Code',
 			'is_json' => 'Is Json',
 			'reponse_data' => 'Reponse Data',
@@ -104,6 +108,8 @@ class Option extends CActiveRecord
 		$criteria->compare('api_id',$this->api_id,true);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('delay',$this->delay);
+		$criteria->compare('custom_header',$this->custom_header);
+		$criteria->compare('response_header',$this->response_header,true);
 		$criteria->compare('http_code',$this->http_code);
 		$criteria->compare('is_json',$this->is_json);
 		$criteria->compare('reponse_data',$this->reponse_data,true);

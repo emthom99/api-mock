@@ -50,15 +50,35 @@
         <div id="not_passthrough">
 
             <div class="row">
-                    <?php echo $form->labelEx($model,'http_code'); ?>
-                    <?php echo $form->textField($model,'http_code'); ?>
-                    <?php echo $form->error($model,'http_code'); ?>
+                <?php echo $form->labelEx($model,'custom_header'); ?>
+                <?php echo $form->checkbox($model,'custom_header'); ?>
+                <?php echo $form->error($model,'custom_header'); ?>
             </div>
 
-            <div class="row">
-                    <?php echo $form->labelEx($model,'is_json'); ?>
-                    <?php echo $form->checkbox($model,'is_json'); ?>
-                    <?php echo $form->error($model,'is_json'); ?>
+            <div id="custom_header">
+
+                <div class="row">
+                        <?php echo $form->labelEx($model,'response_header'); ?>
+                        <?php echo $form->textArea($model,'response_header',array('rows'=>6, 'cols'=>50)); ?>
+                        <?php echo $form->error($model,'response_header'); ?>
+                </div>
+
+            </div>
+            
+            <div id="not_custom_header">
+
+                <div class="row">
+                        <?php echo $form->labelEx($model,'http_code'); ?>
+                        <?php echo $form->textField($model,'http_code'); ?>
+                        <?php echo $form->error($model,'http_code'); ?>
+                </div>
+
+                <div class="row">
+                        <?php echo $form->labelEx($model,'is_json'); ?>
+                        <?php echo $form->checkbox($model,'is_json'); ?>
+                        <?php echo $form->error($model,'is_json'); ?>
+                </div>
+
             </div>
 
             <div class="row">
@@ -101,6 +121,27 @@
                 $("#Option_is_passthrough").bind("change",toggle_passthrough_view);
                 
                 toggle_passthrough_view();
+            ',
+            CClientScript::POS_END
+    );
+    
+    Yii::app()->getClientScript()->registerScript(
+            'toggle_custome_header_view',
+            '
+                function toggle_custome_header_view(){
+                    if($("#Option_custom_header").is(":checked")){
+                        $("#custom_header").show();
+                        $("#not_custom_header").hide();
+                    }
+                    else{
+                        $("#custom_header").hide();
+                        $("#not_custom_header").show();
+                    }
+                }
+                
+                $("#Option_custom_header").bind("change",toggle_custome_header_view);
+                
+                toggle_custome_header_view();
             ',
             CClientScript::POS_END
     );
