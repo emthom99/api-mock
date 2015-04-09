@@ -210,9 +210,9 @@ class ApiController extends Controller
 	public function actionAdmin()
 	{
 		$model=new Api('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Api']))
-			$model->attributes=$_GET['Api'];
+		// $model->unsetAttributes();  // clear any default values
+		// if(isset($_GET['Api']))
+		// 	$model->attributes=$_GET['Api'];
 
 		$this->render('admin',array(
 			'model'=>$model,

@@ -92,12 +92,9 @@ class Api extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('url',$this->url,true);
-		$criteria->compare('current_option',$this->current_option,true);
-		$criteria->compare('validated',$this->validated);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -105,5 +102,14 @@ class Api extends CActiveRecord
                             'pageSize'=>100,
                         ),
 		));
+	}
+	public function behaviors() {
+       return array(
+           'ERememberFiltersBehavior' => array(
+               'class' => 'application.components.ERememberFiltersBehavior',
+               'defaults'=>array(),           /* optional line */
+               'defaultStickOnClear'=>false   /* optional line */
+           ),
+       );
 	}
 }
