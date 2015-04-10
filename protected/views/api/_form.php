@@ -37,6 +37,10 @@
     if(!$model->isNewRecord){
         $this->widget('zii.widgets.grid.CGridView', array(
             'id'=>'api-option-grid',
+            'selectionChanged'=>'function (id){
+                    console.log(id);
+                }
+            ',
             'dataProvider'=>new CArrayDataProvider($model->options,array(
                     'id'=>'option',
                     'sort'=>array(

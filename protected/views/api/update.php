@@ -3,7 +3,7 @@
 /* @var $model Api */
 
 $this->breadcrumbs=array(
-	'Apis'=>array('admin'),
+	'Api'=>array('admin'),
 	$model->name.' Update',
 );
 
@@ -15,6 +15,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Update Api <?php echo $model->id; ?></h1>
+<h1>Update Api <?php echo $model->name; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
