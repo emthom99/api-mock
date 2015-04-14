@@ -38,9 +38,20 @@
         $this->widget('zii.widgets.grid.CGridView', array(
             'id'=>'api-option-grid',
             'selectionChanged'=>'function (id){
-                    console.log(id);
+                thisTable=$("#"+id)
+                selectedIds=thisTable.yiiGridView("getSelection");
+                if(selectedIds.length==0){
+                    lastSelect=$("#current_option").val();
+                    $.each(thisTable.find(".keys span"),function(index, value){
+                        if($(value).text()==lastSelect){
+                            $(thisTable.yiiGridView("getRow",index)[0]).trigger("click");
+                        }
+                    });
                 }
-            ',
+                else{
+                    $("#current_option").val(selectedIds[0]);
+                }
+            }',
             'dataProvider'=>new CArrayDataProvider($model->options,array(
                     'id'=>'option',
                     'sort'=>array(

@@ -19,7 +19,6 @@ return array(
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
-		
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'duccui',
@@ -28,14 +27,14 @@ return array(
 		),
 		
 	),
-        'homeUrl'=>array('api/admin'),
+    'homeUrl'=>array('api/admin'),
 	// application components
 	'components'=>array(
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
-                'urlManager'=>array('routeVar'=>'duccui_r'),
+        'urlManager'=>array('routeVar'=>'duccui_r'),
 		// uncomment the following to enable URLs in path-format
 		/*
 		'urlManager'=>array(
