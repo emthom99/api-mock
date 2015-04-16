@@ -196,7 +196,17 @@ class HistoryController extends Controller
                         	$res_header='HTTP/1.1 '.$option->http_code;
                         	$res_header.=$option->is_json?"\nContent-type: application/json":"\nContent-type: text/html";
                         }
-                        $res_content=$option->reponse_data;
+
+                        if($option->is_response_php){
+                        	ob_start();
+                        	eval($option->response_php);
+						    $res_content = ob_get_contents();
+						    ob_end_clean();
+
+                        }
+                        else{
+                        	$res_content=$option->reponse_data;
+                        }
                     }
                     
                     $aHeader=explode("\n", preg_replace('/(Set-Cookie: .*?);.*/', '$1', $res_header));

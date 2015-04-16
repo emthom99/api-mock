@@ -76,6 +76,8 @@ CREATE TABLE `tbl_option` (
   `response_header` text,
   `http_code` int(11) DEFAULT '200',
   `is_json` tinyint(4) DEFAULT '0',
+  `is_response_php` tinyint(4) DEFAULT '0',
+  `response_php` longtext,
   `reponse_data` longtext,
   `order` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),

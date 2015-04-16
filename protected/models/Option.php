@@ -14,6 +14,8 @@
  * @property string $response_header
  * @property integer $http_code
  * @property integer $is_json
+ * @property integer $is_response_php
+ * @property string $response_php
  * @property string $reponse_data
  * @property integer $order
  *
@@ -49,13 +51,13 @@ class Option extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('is_passthrough, delay, http_code, is_json, order, custom_header', 'numerical', 'integerOnly'=>true),
+			array('is_passthrough, delay, http_code, is_json, is_response_php,order, custom_header', 'numerical', 'integerOnly'=>true),
 			array('api_id', 'length', 'max'=>20),
 			array('name, url_passthrough', 'length', 'max'=>255),
-			array('reponse_data,response_header', 'safe'),
+			array('reponse_data,response_header,response_php', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, api_id, name, is_passthrough, url_passthrough, delay, custom_header, response_header, http_code, is_json, reponse_data, order', 'safe', 'on'=>'search'),
+			array('id, api_id, name, is_passthrough, url_passthrough, delay, custom_header, response_header, http_code, is_json, is_response_php, response_php, reponse_data, order', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -88,6 +90,8 @@ class Option extends CActiveRecord
 			'response_header' => 'Response Header',
 			'http_code' => 'Http Code',
 			'is_json' => 'Is Json',
+			'is_response_php' => 'Is Response Php',
+			'response_php' => 'Response Php',
 			'reponse_data' => 'Reponse Data',
 			'order' => 'Order',
 		);
@@ -112,6 +116,8 @@ class Option extends CActiveRecord
 		$criteria->compare('response_header',$this->response_header,true);
 		$criteria->compare('http_code',$this->http_code);
 		$criteria->compare('is_json',$this->is_json);
+		$criteria->compare('is_response_php',$this->is_response_php);
+		$criteria->compare('response_php',$this->response_php,true);
 		$criteria->compare('reponse_data',$this->reponse_data,true);
 		$criteria->compare('order',$this->order);
 

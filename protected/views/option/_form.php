@@ -82,9 +82,27 @@
             </div>
 
             <div class="row">
-                    <?php echo $form->labelEx($model,'reponse_data'); ?>
-                    <?php echo $form->textArea($model,'reponse_data',array('rows'=>6, 'cols'=>50)); ?>
-                    <?php echo $form->error($model,'reponse_data'); ?>
+                <?php echo $form->labelEx($model,'is_response_php'); ?>
+                <?php echo $form->checkbox($model,'is_response_php'); ?>
+                <?php echo $form->error($model,'is_response_php'); ?>
+            </div>
+
+            <div id="is_response_php">
+
+                <div class="row">
+                        <?php echo $form->labelEx($model,'response_php'); ?>
+                        <?php echo $form->textArea($model,'response_php',array('rows'=>6, 'cols'=>50)); ?>
+                        <?php echo $form->error($model,'response_php'); ?>
+                </div>
+
+            </div>
+
+            <div id="not_response_php">
+                <div class="row">
+                        <?php echo $form->labelEx($model,'reponse_data'); ?>
+                        <?php echo $form->textArea($model,'reponse_data',array('rows'=>6, 'cols'=>50)); ?>
+                        <?php echo $form->error($model,'reponse_data'); ?>
+                </div>
             </div>
         </div>
         
@@ -142,6 +160,27 @@
                 $("#Option_custom_header").bind("change",toggle_custome_header_view);
                 
                 toggle_custome_header_view();
+            ',
+            CClientScript::POS_END
+    );
+    
+    Yii::app()->getClientScript()->registerScript(
+            'toggle_response_php_view',
+            '
+                function toggle_response_php_view(){
+                    if($("#Option_is_response_php").is(":checked")){
+                        $("#is_response_php").show();
+                        $("#not_response_php").hide();
+                    }
+                    else{
+                        $("#is_response_php").hide();
+                        $("#not_response_php").show();
+                    }
+                }
+                
+                $("#Option_is_response_php").bind("change",toggle_response_php_view);
+                
+                toggle_response_php_view();
             ',
             CClientScript::POS_END
     );

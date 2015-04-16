@@ -65,7 +65,7 @@
                     ),
                 )
             ),
-            'filter'=>  Option::model(),
+            //'filter'=>  Option::model(),
             'columns'=>array(
                     array(
                         'class'=>'CCheckBoxColumn',
@@ -114,13 +114,12 @@
                     ),
                 )
             ),
-            'filter'=>  History::model(),
+            //'filter'=>  History::model(),
             'columns'=>array(
                     array(
-                        'class'=>'CLinkColumn',
-                        'header'=>'name',
-                        'labelExpression'=>'$data->name',
-                        'urlExpression'=>'Yii::app()->createUrl("history/update",array("id"=>$data->id))',
+                        'name' => 'name',
+                        'type' => 'raw',
+                        'value' => 'CHtml::link($data->name,Yii::app()->createUrl("history/update",array("id"=>$data->id)))'
                     ),
                     'ip',
                     'method',
